@@ -15,7 +15,7 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
-      # Downloads all artifacts we created by default
+      # Downloads all artifacts we've created by default
       - uses: actions/download-artifact@v4
         with:
           path: ./.github/artifacts

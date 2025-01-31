@@ -6,16 +6,8 @@ on:
         os:
           required: true
           type: string
-      outputs:
-        deb-name:
-          value: ${{ jobs.install_dependencies.outputs.deb-name }}
-        app-image-name:
-          value: ${{ jobs.install_dependencies.outputs.app-image-name }}
 jobs:
   install_dependencies:
-      outputs:
-        deb-name: ${{ steps.deb.outputs.artifact-name }}
-        app-image-name: ${{ steps.app-image.outputs.artifact-name }}
       runs-on: ${{ inputs.os }}
       steps:
           # Install system dependencies for Screenpipe and Tauri
@@ -36,12 +28,6 @@ jobs:
           # Build and upload Tauri app to the artifacts
           - run: bun tauri build --verbose
           - if: inputs.os == 'ubuntu-latest'
-            id: deb
-            uses: actions/upload-artifact@v4
-            with:
-              name: ${{ inputs.os }}-deb
-              path: ./src-tauri/target/release/bundle/deb/*.deb
-          - if: inputs.os == 'ubuntu-latest'
             id: app-image
             uses: actions/upload-artifact@v4
             with:
@@ -53,4 +39,9 @@ jobs:
             with:
               name: ${{ inputs.os }}-dmg
               path: ./src-tauri/target/release/bundle/dmg/*.dmg
-              
+          - if: inputs.os == 'windows-latest'
+            id: msi
+            uses: actions/upload-artifact@v4
+            with:
+              name: ${{ inputs.os }}-msi
+              path: ./src-tauri/target/release/bundle/msi/*.msi

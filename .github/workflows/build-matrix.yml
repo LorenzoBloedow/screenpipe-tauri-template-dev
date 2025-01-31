@@ -6,11 +6,6 @@ on:
   pull_request:
       branches: [main, master]
   workflow_call:
-    outputs:
-        deb-name:
-          value: ${{ jobs.build.outputs.deb-name }}
-        app-image-name:
-          value: ${{ jobs.build.outputs.app-image-name }}
 jobs:
   build:
       strategy:
