@@ -15,11 +15,10 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v4
+      # Downloads all artifacts we created by default
       - uses: actions/download-artifact@v4
         with:
           path: ./.github/artifacts
       - uses: softprops/action-gh-release@v2
         with:
           files: ./.github/artifacts/**/*
-
-        #  # ${{ needs.build.outputs.deb-name }}, ${{ needs.build.outputs.app-image-name }}

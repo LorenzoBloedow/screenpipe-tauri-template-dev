@@ -18,10 +18,17 @@ jobs:
         app-image-name: ${{ steps.app-image.outputs.artifact-name }}
       runs-on: ${{ inputs.os }}
       steps:
+          # Install Homebrew on macOS
+          - if: inputs.os == 'macos-latest'
+            run: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
           # Install system dependencies for Screenpipe and Tauri
           - if: inputs.os == 'ubuntu-latest'
           # Multiline doesn't seem to be working (even with \)
             run: DEBIAN_FRONTEND=noninteractive sudo apt-get -y update && sudo apt-get -y install libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev g++ ffmpeg tesseract-ocr cmake pkg-config libavformat-dev libavfilter-dev libavdevice-dev libavcodec-dev libavutil-dev libswscale-dev libssl-dev libtesseract-dev libxdo-dev libsdl2-dev libclang-dev libxtst-dev libasound2-dev libdbus-1-dev libxcb1-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libx11-dev libxi-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev clang llvm-dev llvm
+          - if: inputs.os == 'macos-latest'
+            # TODO: Find out if this is necessary (we aren't currently building screenpipe from source)
+            run: brew install pkg-config ffmpeg jq cmake wget
 
           # Install Rust (rustc, cargo, etc)
           - uses: actions-rust-lang/setup-rust-toolchain@v1
@@ -47,3 +54,10 @@ jobs:
             with:
               name: ${{ inputs.os }}-app-image
               path: ./src-tauri/target/release/bundle/appimage/*.AppImage
+          - if: inputs.os == 'macos-latest'
+            id: dmg
+            uses: actions/upload-artifact@v4
+            with:
+              name: ${{ inputs.os }}-dmg
+              path: ./src-tauri/target/release/bundle/dmg/*.dmg
+              
