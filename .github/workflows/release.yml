@@ -9,6 +9,8 @@ jobs:
   build:
     uses: ./.github/workflows/build-matrix.yml
   release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs: build
     steps:
