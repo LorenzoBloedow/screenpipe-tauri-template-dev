@@ -20,4 +20,4 @@ jobs:
         with:
           files: ./.github/artifacts/**/*
 
-          # ${{ needs.build.outputs.deb-name }}, ${{ needs.build.outputs.app-image-name }}
+        #  # ${{ needs.build.outputs.deb-name }}, ${{ needs.build.outputs.app-image-name }}
