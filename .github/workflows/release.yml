@@ -20,6 +20,6 @@ jobs:
           path: ./.github/artifacts
       - uses: softprops/action-gh-release@v2
         with:
-          files: ./.github/artifacts/**/
+          files: ./.github/artifacts/**/*
 
         #  # ${{ needs.build.outputs.deb-name }}, ${{ needs.build.outputs.app-image-name }}
